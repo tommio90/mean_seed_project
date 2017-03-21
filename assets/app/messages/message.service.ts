@@ -24,11 +24,12 @@ export class MessageService {
         return this.http.post('http://localhost:3000/message' + token, body, {headers: headers})
             .map((response: Response) => {
                 const result = response.json();
+                console.log(result);
                 const message = new Message(
-                    result.obj.content,
-                    result.obj.user.firstName,
-                    result.obj.id,
-                    result.obj.userIid);
+                    result.obj.message.content,
+                    result.obj.user.email,
+                    result.obj.message.id,
+                    result.obj.message.userId);
                 this.messages.push(message);
                 return message;
             })
@@ -52,7 +53,7 @@ export class MessageService {
                     
                     transformedMessages.push(new Message(
                         message.content,
-                        localStorage.getItem('userName'),
+                        message.user.email
                         message.id,
                         message.userId)
                     );

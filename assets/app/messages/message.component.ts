@@ -24,7 +24,7 @@ import { AuthService } from "../auth/auth.service";
 })
 export class MessageComponent {
     @Input() message: Message;
-    
+     user_id = localStorage.getItem('userId');
 
     constructor(private messageService: MessageService, private authService: AuthService) {}
 

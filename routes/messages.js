@@ -12,7 +12,9 @@ router.get('/',middleware.requireAuthentication, function (req, res, next) {
 // 	};
     db.message.findAll({
 		// where : where
+		include: [db.user]
 	}).then(function(messages){
+		console.log(messages);
         res.status(200).json({
                     message: 'Success',
                     obj: messages
@@ -36,9 +38,15 @@ router.post('/',middleware.requireAuthentication, function (req, res, next) {
 			req.user.addMessage(message).then(function () {
 			return message.reload();
 		}).then(function (message) {
-				res.status(200).json({
-					message: 'Saved message',
-					obj: message
+			db.user.findOne({where: {
+				id : message.dataValues.userId
+			}}).then(function(user){
+				var send ={user , message};
+				console.log(send);
+					res.status(200).json({
+						message: 'Saved message',
+						obj: send
+					})
 				})
 			})
         }).catch(function (err) {

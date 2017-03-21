@@ -6,7 +6,7 @@
         <div class="author">
             {{ message.username }}
         </div>
-    <div *ngIf="isLoggedIn()">
+    <div *ngIf="message.userId == user_id">
         <div class="config">
             <a (click)="onEdit()">Edit</a>
             <a (click)="onDelete()">Delete</a>
