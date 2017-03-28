@@ -6,10 +6,13 @@
 
 var app = require('../app');
 var debug = require('debug')('node-rest:server');
-var http = require('http');
-
+// var http = require('http');1
+var server = require('http').Server(app);
+// var io = require('socket.io')(server);
 var db = require('../db.js');
 
+var io     = app.io
+io.listen( server );
 
 /**
  * Get port from environment and store in Express.
@@ -22,7 +25,10 @@ app.set('port', port);
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
+// var server = http.createServer(app);2
+
+
+
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -95,3 +101,5 @@ function onListening() {
 db.sequelize.sync(
 	//{force:true}
 	);
+
+module.exports = io;

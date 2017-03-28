@@ -7,14 +7,25 @@ import { AuthService } from "../auth/auth.service";
 
 @Component({
     selector: 'app-message-input',
-    templateUrl: './message-input.component.html'
+    templateUrl: './message-input.component.html',
+        styles: [`
+         body { padding-top: 70px; }
+
+         .footer{
+             display: block;
+             background-color : white;
+         }
+    `]
 })
 export class MessageInputComponent implements OnInit {
     message: Message;
+    messages = [];
+    connection;
 
     constructor(private messageService: MessageService, private authService: AuthService) {}
 
     
+   
 
   isLoggedIn() {
         return this.authService.isLoggedIn();
@@ -46,8 +57,20 @@ export class MessageInputComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.messageService.messageIsEdit.subscribe(
+        this.connection = this.messageService.messageIsEdit.subscribe(
             (message: Message) => this.message = message
         );
+        this.connection = this.messageService.getSockets().subscribe(message => {
+          this.messages.push(message);
+        });
     }
+
+
+    ngOnDestroy(){
+        this.connection.unsubscribe();
+    }
+
+
+
+
 }

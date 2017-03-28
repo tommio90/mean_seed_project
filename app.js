@@ -1,4 +1,5 @@
 var express = require('express');
+var socket_io    = require( "socket.io" );
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
@@ -7,12 +8,22 @@ var bodyParser = require('body-parser');
 var middleware = require('./middleware.js')(db);
 var db = require('./db.js');
 
+var app = express();
+var io = socket_io();
+app.io = io;
+
+
+//sockets
+
+
 
 var appRoutes = require('./routes/app');
-var messageRoutes = require('./routes/messages');
-var userRoutes = require('./routes/user');
+var messageRoutes = require('./routes/messages')(app);
+var userRoutes = require('./routes/user')(app);
 
-var app = express();
+
+
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -32,6 +43,18 @@ app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Methods', 'POST, GET, PATCH, DELETE, OPTIONS');
     next();
 });
+
+
+// io.on('connection', function(socket){
+ 
+//   console.log('a user connected');
+    
+//   socket.on('add-message', (message) => {
+//         console.log(message);
+//          io.emit('message', {type:'new-message', text: message});    
+//        });
+    
+// });
 
 app.use('/message', messageRoutes);
 app.use('/user', userRoutes);

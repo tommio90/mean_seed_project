@@ -25,8 +25,8 @@ export class HeaderComponent {
     onLogTest(){
         console.log('onLogTest => activated');
         this.authService.logTest().subscribe(data => {
-            console.log(data),
-            localStorage.token.clear(),
+            console.log(data);
+            localStorage.token.clear();
             this.router.navigate(['/auth']);
         });
     }
