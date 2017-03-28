@@ -40,7 +40,7 @@ export class MessageService {
                 this.messages.push(message);
                 return message;
 
-                observer.next(data);    
+                // observer.next(data);    
               });
               return () => {
                 this.socket.disconnect();
